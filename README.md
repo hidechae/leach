@@ -1,4 +1,6 @@
 [![Build Status](https://travis-ci.org/hidechae/leach.svg?branch=master)](https://travis-ci.org/hidechae/leach)
+[![Code Climate](https://codeclimate.com/github/hidechae/leach/badges/gpa.svg)](https://codeclimate.com/github/hidechae/leach)
+[![Test Coverage](https://codeclimate.com/github/hidechae/leach/badges/coverage.svg)](https://codeclimate.com/github/hidechae/leach/coverage)
 
 # Leach
 

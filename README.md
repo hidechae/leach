@@ -1,8 +1,6 @@
 # Leach
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/leach`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Validate and filter parameters.
 
 ## Installation
 
@@ -22,7 +20,46 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+You can define validations with type to cast.
+
+```
+Leach.filter(parameters) do
+  requires :key1, type: Integer
+  requires :key2, type: String
+  requires :key3, type: Symbol
+  requires :key4, type: Date
+  optional :key5, type: Time
+end
+```
+
+You can define validations recursively.
+
+```
+# array of integer values
+Leach.filter(parameters) do
+  requires :key1, type: Array do
+    requires type: Integer
+  end
+end
+
+# hash
+Leach.filter(parameters) do
+  requires :key1, type: Hash do
+    requires :key11, type: Integer
+    requires :key12, type: String
+  end
+end
+
+# array of hash
+Leach.filter(parameters) do
+  requires :key1, type: Array do
+    requires type: Hash do
+      requires :key11, type: Integer
+      requires :key12, type: String
+    end
+  end
+end
+```
 
 ## Development
 

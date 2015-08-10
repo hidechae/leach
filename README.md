@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/hidechae/leach.svg?branch=master)](https://travis-ci.org/hidechae/leach)
+
 # Leach
 
 Validate and filter parameters.
@@ -7,7 +9,7 @@ Validate and filter parameters.
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'leach'
+gem 'leach', github: 'hidechae/leach'
 ```
 
 And then execute:
@@ -22,7 +24,7 @@ Or install it yourself as:
 
 You can define validations with type to cast.
 
-```
+```ruby
 Leach.filter(parameters) do
   requires :key1, type: Integer
   requires :key2, type: String
@@ -34,7 +36,7 @@ end
 
 You can define validations recursively.
 
-```
+```ruby
 # array of integer values
 Leach.filter(parameters) do
   requires :key1, type: Array do

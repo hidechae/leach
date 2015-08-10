@@ -3,6 +3,4 @@ source 'https://rubygems.org'
 # Specify your gem's dependencies in leach.gemspec
 gemspec
 
-group :test do
-  gem "codeclimate-test-reporter", require: nil
-end
+gem "codeclimate-test-reporter", group: :test, require: nil

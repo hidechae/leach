@@ -9,7 +9,7 @@ module Leach
     def filter(parameters, &block)
       case parameters
       when Array
-        Leach::AraryParameters.new(parameters, &block)
+        Leach::ArrayParameters.new(parameters, &block)
       when Hash
         Leach::HashParameters.new(parameters, &block)
       else

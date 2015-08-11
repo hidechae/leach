@@ -7,86 +7,107 @@ describe Leach do
     expect(Leach::VERSION).not_to be nil
   end
 
-  it 'type filter' do
-    parameters = {
-      integer:            '1',
-      string:             'string',
-      symbol:             'symbol',
-      date:               '2015/01/01',
-      time:               '2015/01/01 12:34:56',
-      array_integer:      %w(1 2 3),
-      array_array:        [%w(1 2 3),
-                           %w(4 5 6)],
-      array_hash:         [{ id: '1',
-                             name: 'item1' },
-                           { id: '2',
-                             name: 'item2' }],
-      hash_to_array:      { '1' => '1', '2' => '2', '3' => '3' },
-      hash_to_array_hash: { '1' => { id: '1',
-                                     name: 'item1' },
-                            '2' => { id: '2',
-                                     name: 'item2' } },
-      hash:               { id:   '1',
-                            name: 'item' }
-    }
+  it 'array parameters' do
+    parameters = [ 'hello', 'world' ]
+    expected   = [ :hello,  :world ]
+    actual = Leach.filter(parameters) do
+      requires type: Symbol
+    end
+    expect(actual).to eq(expected)
+  end
 
-    expected_params = {
-      integer:            1,
-      string:             'string',
-      symbol:             :symbol,
-      date:               Date.parse('2015/01/01'),
-      time:               Time.parse('2015/01/01 12:34:56'),
-      array_integer:      [1, 2, 3],
-      array_array:        [[1, 2, 3],
-                           [4, 5, 6]],
-      array_hash:         [{ id: 1,
-                             name: 'item1' },
-                           { id: 2,
-                             name: 'item2' }],
-      hash_to_array:      [1, 2, 3],
-      hash_to_array_hash: [{ id: 1,
-                             name: 'item1' },
-                           { id: 2,
-                             name: 'item2' }],
-      hash:               { id: 1,
-                            name: 'item' }
-    }
+  it 'integer values' do
+    parameters = { key: '1234' }
+    expected   = { key: 1234 }
+    actual = Leach.filter(parameters) do
+      requires :key, type: Integer
+    end
+    expect(actual).to eq(expected)
+  end
 
-    filtered_parameters = Leach.filter(parameters) do
-      requires :integer, type: Integer
-      requires :string, type: String
-      requires :symbol, type: Symbol
-      requires :date, type: Date
-      requires :time, type: Time
-      requires :array_integer, type: Array do
+  it 'string values' do
+    parameters = { key: 1234 }
+    expected   = { key: '1234' }
+    actual = Leach.filter(parameters) do
+      requires :key, type: String
+    end
+    expect(actual).to eq(expected)
+  end
+
+  it 'symbol values' do
+    parameters = { key: 'hello' }
+    expected   = { key: :hello }
+    actual = Leach.filter(parameters) do
+      requires :key, type: Symbol
+    end
+    expect(actual).to eq(expected)
+  end
+
+  it 'date values' do
+    parameters = { key: '2015/01/01' }
+    expected   = { key: Date.parse('2015/01/01') }
+    actual = Leach.filter(parameters) do
+      requires :key, type: Date
+    end
+    expect(actual).to eq(expected)
+  end
+
+  it 'time values' do
+    parameters = { key: '2015/01/01 01:23:45' }
+    expected   = { key: Time.parse('2015/01/01 01:23:45') }
+    actual = Leach.filter(parameters) do
+      requires :key, type: Time
+    end
+    expect(actual).to eq(expected)
+  end
+
+  it 'array values' do
+    parameters = { key: %w(1 2 3) }
+    expected   = { key: [1, 2, 3] }
+    actual = Leach.filter(parameters) do
+      requires :key, type: Array do
         requires type: Integer
-      end
-      requires :array_array, type: Array do
-        requires type: Array do
-          requires type: Integer
-        end
-      end
-      requires :array_hash, type: Array do
-        requires type: Hash do
-          requires :id, type: Integer
-          requires :name, type: String
-        end
-      end
-      requires :hash_to_array, type: Array do
-        requires type: Integer
-      end
-      requires :hash_to_array_hash, type: Array do
-        requires type: Hash do
-          requires :id, type: Integer
-          requires :name, type: String
-        end
-      end
-      requires :hash, type: Hash do
-        requires :id, type: Integer
-        requires :name, type: String
       end
     end
+    expect(actual).to eq(expected)
+  end
 
-    expect(filtered_parameters).to eq(expected_params)
+  it 'hash values' do
+    parameters = { key: { key1: '1234', key2: 'hello' }}
+    expected   = { key: { key1: 1234,   key2: :hello  }}
+    actual = Leach.filter(parameters) do
+      requires :key, type: Hash do
+        requires :key1, type: Integer
+        requires :key2, type: Symbol
+      end
+    end
+    expect(actual).to eq(expected)
+  end
+
+  it 'hash values cast to array' do
+    parameters = {
+      key: { key1: { key11: '1234', key12: 'hello' },
+             key2: { key11: '1234', key12: 'hello' }}
+    }
+    expected = {
+      key: [{ key11: 1234, key12: :hello },
+            { key11: 1234, key12: :hello }]
+    }
+    actual = Leach.filter(parameters) do
+      requires :key, type: Array do
+        requires type: Hash do
+          requires :key11, type: Integer
+          requires :key12, type: Symbol
+        end
+      end
+    end
+    expect(actual).to eq(expected)
+  end
+
+  it 'invalid parameter' do
+    parameters = 'invalid parameter'
+    expect do
+      Leach.filter(parameters)
+    end.to raise_error(RuntimeError)
   end
 end

@@ -72,6 +72,19 @@ describe Leach do
     expect(actual).to eq(expected)
   end
 
+  it 'array values in array' do
+    parameters = { key: [%w(1 2), %w(3 4), %w(5 6)] }
+    expected   = { key: [[1, 2], [3, 4], [5, 6]] }
+    actual = Leach.filter(parameters) do
+      requires :key, type: Array do
+        requires type: Array do
+          requires type: Integer
+        end
+      end
+    end
+    expect(actual).to eq(expected)
+  end
+
   it 'hash values' do
     parameters = { key: { key1: '1234', key2: 'hello' }}
     expected   = { key: { key1: 1234,   key2: :hello  }}
@@ -101,6 +114,20 @@ describe Leach do
         end
       end
     end
+    expect(actual).to eq(expected)
+  end
+
+  it 'optional parameter' do
+    parameters = { key1: '1234', key2: 'hello' }
+    expected   = { key1: 1234,   key2: :hello  }
+    actual = Leach.filter(parameters) do
+      requires :key1, type: Integer
+      optional :key2, type: Symbol
+    end
+    expect(actual).to eq(expected)
+
+    parameters.delete(:key2)
+    parameters.delete(:key2)
     expect(actual).to eq(expected)
   end
 

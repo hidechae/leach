@@ -8,7 +8,7 @@ module Leach
         send(type.to_s, value)
       when array_class?
         case value
-        when hash? then value.values
+        when Hash then value.values
         else send(type.to_s, value)
         end
       when symbol_class?

@@ -34,8 +34,8 @@ module Leach
       if block_given?
         value =
           case value
-          when array? then ArrayParameters.new(value, &block)
-          when hash?  then self.class.new(value, &block)
+          when Array then ArrayParameters.new(value, &block)
+          when Hash  then self.class.new(value, &block)
           else fail
           end.to_params
       end

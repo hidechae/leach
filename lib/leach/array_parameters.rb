@@ -29,8 +29,8 @@ module Leach
       if block_given?
         values = values.map do |value|
           case value
-          when array? then self.class.new(value, &block)
-          when hash?  then HashParameters.new(value, &block)
+          when Array then self.class.new(value, &block)
+          when Hash  then HashParameters.new(value, &block)
           else fail
           end.to_params
         end

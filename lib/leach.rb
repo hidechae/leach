@@ -1,8 +1,8 @@
-require "leach/version"
-require "leach/filter"
-require "leach/helper"
-require "leach/array_parameters"
-require "leach/hash_parameters"
+require 'leach/version'
+require 'leach/filter'
+require 'leach/helper'
+require 'leach/array_parameters'
+require 'leach/hash_parameters'
 
 module Leach
   class << self

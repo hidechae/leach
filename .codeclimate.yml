@@ -3,6 +3,9 @@ languages:
 engines:
   rubocop:
     enabled: true
+ratings:
+  paths:
+    - lib/**
 exclude_paths:
   - bin/**/*
   - coverage/**/*

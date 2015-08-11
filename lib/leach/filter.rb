@@ -16,7 +16,7 @@ module Leach
       when date_class?, time_class?
         type.send(:parse, String(value))
       else
-        fail NotImplementedError.new("couldn't cast to #{type}")
+        fail NotImplementedError, "couldn't cast to #{type}"
       end
     end
   end

@@ -8,3 +8,7 @@ exclude_paths:
   - bin/**/*
   - coverage/**/*
   - spec/**/*
+  - Gemfile
+  - README.md
+  - Rakefile
+  - leach.gemspec

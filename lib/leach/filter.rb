@@ -1,22 +1,17 @@
-module Leach
-  module Filter
-    private
+require 'leach/filters/base'
+require 'leach/filters/integer_filter'
+require 'leach/filters/string_filter'
+require 'leach/filters/symbol_filter'
+require 'leach/filters/array_filter'
+require 'leach/filters/hash_filter'
+require 'leach/filters/date_filter'
+require 'leach/filters/time_filter'
 
-    def cast_type(value, type)
-      case type
-      when integer_class?, string_class?, hash_class?
-        send(type.to_s, value)
-      when array_class?
-        case value
-        when Hash then value.values
-        else send(type.to_s, value)
-        end
-      when symbol_class?
-        String(value).to_sym
-      when date_class?, time_class?
-        type.send(:parse, String(value))
-      else
-        fail NotImplementedError, "couldn't cast to #{type}"
+module Leach
+  class Filter
+    class << self
+      def run(value, type:, **options)
+        const_get("Leach::Filters::#{type}Filter").run(value, **options)
       end
     end
   end

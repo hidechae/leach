@@ -1,8 +1,5 @@
 module Leach
   class HashParameters
-    include Leach::Helper
-    include Leach::Filter
-
     def initialize(row_params, &block)
       fail unless row_params.instance_of?(Hash)
       @row_params = row_params
@@ -11,14 +8,17 @@ module Leach
       instance_eval(&block)
     end
 
-    def requires(key, type:, &block)
+    def requires(key, type:, **options, &block)
       fail "`#{key}` is required" unless @row_params.key?(key)
-      filter(key, type: type, &block)
+      set_params(key, type: type, **options, &block)
     end
 
-    def optional(key, type:, &block)
-      return unless @row_params.key?(key)
-      filter(key, type: type, &block)
+    def optional(key, type:, default: nil, **options, &block)
+      unless @row_params.key?(key)
+        @params.store(key, default)
+      else
+        set_params(key, type: type, **options, &block)
+      end
     end
 
     def to_params
@@ -27,19 +27,10 @@ module Leach
 
     private
 
-    def filter(key, type:, &block)
+    def set_params(key, type:, **options, &block)
       value = @row_params[key]
-      value = cast_type(value, type) if type
-
-      if block_given?
-        value =
-          case value
-          when Array then ArrayParameters.new(value, &block)
-          when Hash  then self.class.new(value, &block)
-          else fail
-          end.to_params
-      end
-
+      value = Filter.run(value, type: type, **options)
+      value = Leach.filter(value, &block) if block_given?
       @params.store(key, value)
     end
   end

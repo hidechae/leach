@@ -1,6 +1,8 @@
 module Leach
   module Parameters
     class HashParameter
+      attr_reader :params
+
       def initialize(row_params, &block)
         unless row_params.instance_of?(Hash)
           fail Leach::Error::InvalidType, "Invalid type `#{row_params.class.name}`"
@@ -19,15 +21,11 @@ module Leach
       end
 
       def optional(key, type:, default: nil, **options, &block)
-        unless @row_params.key?(key)
-          @params.store(key, default)
-        else
+        if @row_params.key?(key)
           set_params(key, type: type, **options, &block)
+        else
+          @params.store(key, default)
         end
-      end
-
-      def to_params
-        @params
       end
 
       private

@@ -1,6 +1,8 @@
 module Leach
   module Parameters
     class ArrayParameter
+      attr_reader :params
+
       def initialize(row_params, &block)
         unless row_params.instance_of?(Array)
           fail Leach::Error::InvalidType, "Invalid type `#{row_params.class.name}`"
@@ -15,10 +17,6 @@ module Leach
         set_params(type: type, &block)
       end
       alias_method :optional, :requires
-
-      def to_params
-        @params
-      end
 
       private
 

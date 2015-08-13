@@ -13,7 +13,7 @@ module Leach
       when Array then Leach::Parameters::ArrayParameter.new(parameters, &block)
       when Hash  then Leach::Parameters::HashParameter.new(parameters, &block)
       else fail Leach::Error::InvalidType, "Invalid type `#{parameters.class.name}`"
-      end.to_params
+      end.params
     end
   end
 end

@@ -1,10 +1,12 @@
 module Leach
   class ArrayParameters
     def initialize(row_params, &block)
-      fail unless row_params.instance_of?(Array)
+      unless row_params.instance_of?(Array)
+        fail Leach::Error::InvalidType, "Invalid type `#{row_params.class.name}`"
+      end
+
       @row_params = row_params
       @params = []
-
       instance_eval(&block)
     end
 

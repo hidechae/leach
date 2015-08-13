@@ -1,15 +1,19 @@
 module Leach
   class HashParameters
     def initialize(row_params, &block)
-      fail unless row_params.instance_of?(Hash)
+      unless row_params.instance_of?(Hash)
+        fail Leach::Error::InvalidType, "Invalid type `#{row_params.class.name}`"
+      end
+
       @row_params = row_params
       @params = {}
-
       instance_eval(&block)
     end
 
     def requires(key, type:, **options, &block)
-      fail "`#{key}` is required" unless @row_params.key?(key)
+      unless @row_params.key?(key)
+        fail Leach::Error::NotFound, "Required key `#{key}` not found."
+      end
       set_params(key, type: type, **options, &block)
     end
 

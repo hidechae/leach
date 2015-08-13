@@ -3,6 +3,7 @@ require 'leach/filter'
 require 'leach/parameters/array_parameter'
 require 'leach/parameters/hash_parameter'
 require 'leach/error/invalid_type'
+require 'leach/error/invalid_value'
 require 'leach/error/not_found'
 
 module Leach

@@ -14,15 +14,6 @@ describe Leach do
     expect(actual).to eq(expected)
   end
 
-  it 'Integer values' do
-    parameters = { key: '1234' }
-    expected   = { key: 1234 }
-    actual = Leach.filter(parameters) do
-      requires :key, type: Integer, max: 10000, min: 0
-    end
-    expect(actual).to eq(expected)
-  end
-
   it 'String values' do
     parameters = { key: 1234 }
     expected   = { key: '1234' }
@@ -127,11 +118,51 @@ describe Leach do
 
   it 'Optional parameter using default' do
     parameters = { key1: '1234' }
-    expected   = { key1: 1234, key2: 'hello' }
+    expected   = { key1: 1234, key2: :hello }
     actual = Leach.filter(parameters) do
       requires :key1, type: Integer
-      optional :key2, type: Symbol, default: 'hello'
+      optional :key2, type: Symbol, default: :hello
     end
     expect(actual).to eq(expected)
+  end
+
+  it 'Optional parameter having value' do
+    parameters = { key1: '1234', key2: 'hello' }
+    expected   = { key1: 1234, key2: :hello }
+    actual = Leach.filter(parameters) do
+      requires :key1, type: Integer
+      optional :key2, type: Symbol, default: :world
+    end
+    expect(actual).to eq(expected)
+  end
+
+  describe Exception do
+    it 'Required key not found' do
+      parameters = {}
+      expect do
+        Leach.filter(parameters) do
+          requires :key, type: Integer
+        end
+      end.to raise_error(Leach::Error::NotFound)
+    end
+
+    it 'Invalid parameter' do
+      parameters = 'invalid parameter'
+      expect do
+        Leach.filter(parameters)
+      end.to raise_error(Leach::Error::InvalidType)
+    end
+
+    it 'Invalid type for ArrayParameter' do
+      expect do
+        Leach::Parameters::ArrayParameter.new({})
+      end.to raise_error(Leach::Error::InvalidType)
+    end
+
+    it 'Invalid type for HashParameter' do
+      expect do
+        Leach::Parameters::HashParameter.new([])
+      end.to raise_error(Leach::Error::InvalidType)
+    end
   end
 end

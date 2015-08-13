@@ -1,6 +1,8 @@
+require 'date'
+
 module Leach
   module Filters
-    class DateFilter < Base
+    class DateFilter
       class << self
         def run(value, **options)
           cast(value)

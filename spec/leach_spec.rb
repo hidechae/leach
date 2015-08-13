@@ -1,13 +1,11 @@
 require 'spec_helper'
-require 'date'
-require 'time'
 
-describe Leach do
+describe 'Leach Normal' do
   it 'has a version number' do
     expect(Leach::VERSION).not_to be nil
   end
 
-  it 'array parameters' do
+  it 'Array parameters' do
     parameters = [ 'hello', 'world' ]
     expected   = [ :hello,  :world ]
     actual = Leach.filter(parameters) do
@@ -16,7 +14,7 @@ describe Leach do
     expect(actual).to eq(expected)
   end
 
-  it 'integer values' do
+  it 'Integer values' do
     parameters = { key: '1234' }
     expected   = { key: 1234 }
     actual = Leach.filter(parameters) do
@@ -25,7 +23,7 @@ describe Leach do
     expect(actual).to eq(expected)
   end
 
-  it 'string values' do
+  it 'String values' do
     parameters = { key: 1234 }
     expected   = { key: '1234' }
     actual = Leach.filter(parameters) do
@@ -34,7 +32,7 @@ describe Leach do
     expect(actual).to eq(expected)
   end
 
-  it 'symbol values' do
+  it 'Symbol values' do
     parameters = { key: 'hello' }
     expected   = { key: :hello }
     actual = Leach.filter(parameters) do
@@ -43,7 +41,7 @@ describe Leach do
     expect(actual).to eq(expected)
   end
 
-  it 'date values' do
+  it 'Date values' do
     parameters = { key: '2015/01/01' }
     expected   = { key: Date.parse('2015/01/01') }
     actual = Leach.filter(parameters) do
@@ -52,7 +50,7 @@ describe Leach do
     expect(actual).to eq(expected)
   end
 
-  it 'time values' do
+  it 'Time values' do
     parameters = { key: '2015/01/01 01:23:45' }
     expected   = { key: Time.parse('2015/01/01 01:23:45') }
     actual = Leach.filter(parameters) do
@@ -61,7 +59,7 @@ describe Leach do
     expect(actual).to eq(expected)
   end
 
-  it 'array values' do
+  it 'Array values' do
     parameters = { key: %w(1 2 3) }
     expected   = { key: [1, 2, 3] }
     actual = Leach.filter(parameters) do
@@ -72,7 +70,7 @@ describe Leach do
     expect(actual).to eq(expected)
   end
 
-  it 'array values in array' do
+  it 'Array values in array' do
     parameters = { key: [%w(1 2), %w(3 4), %w(5 6)] }
     expected   = { key: [[1, 2], [3, 4], [5, 6]] }
     actual = Leach.filter(parameters) do
@@ -85,7 +83,7 @@ describe Leach do
     expect(actual).to eq(expected)
   end
 
-  it 'hash values' do
+  it 'Hash values' do
     parameters = { key: { key1: '1234', key2: 'hello' }}
     expected   = { key: { key1: 1234,   key2: :hello  }}
     actual = Leach.filter(parameters) do
@@ -97,7 +95,7 @@ describe Leach do
     expect(actual).to eq(expected)
   end
 
-  it 'hash values cast to array' do
+  it 'Hash values cast to Array' do
     parameters = {
       key: { key1: { key11: '1234', key12: 'hello' },
              key2: { key11: '1234', key12: 'hello' }}
@@ -117,7 +115,7 @@ describe Leach do
     expect(actual).to eq(expected)
   end
 
-  it 'optional parameter' do
+  it 'Optional parameter' do
     parameters = { key1: '1234', key2: 'hello' }
     expected   = { key1: 1234,   key2: :hello  }
     actual = Leach.filter(parameters) do
@@ -129,12 +127,5 @@ describe Leach do
     parameters.delete(:key2)
     parameters.delete(:key2)
     expect(actual).to eq(expected)
-  end
-
-  it 'invalid parameter' do
-    parameters = 'invalid parameter'
-    expect do
-      Leach.filter(parameters)
-    end.to raise_error(Leach::Error::InvalidType)
   end
 end

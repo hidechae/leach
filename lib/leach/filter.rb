@@ -1,4 +1,3 @@
-require 'leach/filters/base'
 require 'leach/filters/integer_filter'
 require 'leach/filters/string_filter'
 require 'leach/filters/symbol_filter'

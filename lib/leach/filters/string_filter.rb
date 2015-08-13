@@ -1,6 +1,6 @@
 module Leach
   module Filters
-    class StringFilter < Base
+    class StringFilter
       class << self
         def run(value, **options)
           cast(value)

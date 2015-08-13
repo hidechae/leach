@@ -1,6 +1,8 @@
+require 'time'
+
 module Leach
   module Filters
-    class TimeFilter < Base
+    class TimeFilter
       class << self
         def run(value, **options)
           cast(value)

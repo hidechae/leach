@@ -1,6 +1,6 @@
 module Leach
   module Filters
-    class HashFilter < Base
+    class HashFilter
       class << self
         def run(value, **options)
           cast(value)

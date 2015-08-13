@@ -1,6 +1,6 @@
 module Leach
   module Error
-    class InvalidType < StandardError
+    class InvalidValue < StandardError
     end
   end
 end

@@ -1,6 +1,6 @@
 module Leach
   module Filters
-    class SymbolFilter < Base
+    class SymbolFilter
       class << self
         def run(value, *options)
           cast(value)

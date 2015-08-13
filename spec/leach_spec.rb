@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'Leach Normal' do
+describe Leach do
   it 'has a version number' do
     expect(Leach::VERSION).not_to be nil
   end
@@ -18,7 +18,7 @@ describe 'Leach Normal' do
     parameters = { key: '1234' }
     expected   = { key: 1234 }
     actual = Leach.filter(parameters) do
-      requires :key, type: Integer
+      requires :key, type: Integer, max: 10000, min: 0
     end
     expect(actual).to eq(expected)
   end
@@ -116,16 +116,22 @@ describe 'Leach Normal' do
   end
 
   it 'Optional parameter' do
-    parameters = { key1: '1234', key2: 'hello' }
-    expected   = { key1: 1234,   key2: :hello  }
+    parameters = { key1: '1234' }
+    expected   = { key1: 1234, key2: nil }
     actual = Leach.filter(parameters) do
       requires :key1, type: Integer
       optional :key2, type: Symbol
     end
     expect(actual).to eq(expected)
+  end
 
-    parameters.delete(:key2)
-    parameters.delete(:key2)
+  it 'Optional parameter using default' do
+    parameters = { key1: '1234' }
+    expected   = { key1: 1234, key2: 'hello' }
+    actual = Leach.filter(parameters) do
+      requires :key1, type: Integer
+      optional :key2, type: Symbol, default: 'hello'
+    end
     expect(actual).to eq(expected)
   end
 end

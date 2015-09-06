@@ -5,6 +5,7 @@ require 'leach/parameters/hash_parameter'
 require 'leach/error/invalid_type'
 require 'leach/error/invalid_value'
 require 'leach/error/not_found'
+require 'extension/Boolean.rb'
 
 module Leach
   class << self

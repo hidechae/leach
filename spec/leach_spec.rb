@@ -50,6 +50,15 @@ describe Leach do
     expect(actual).to eq(expected)
   end
 
+  it 'Boolean values' do
+    parameters = { key: 1 }
+    expected   = { key: true }
+    actual = Leach.filter(parameters) do
+      requires :key, type: Boolean
+    end
+    expect(actual).to eq(expected)
+  end
+
   it 'Array values' do
     parameters = { key: %w(1 2 3) }
     expected   = { key: [1, 2, 3] }

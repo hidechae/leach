@@ -5,6 +5,7 @@ require 'leach/filters/array_filter'
 require 'leach/filters/hash_filter'
 require 'leach/filters/date_filter'
 require 'leach/filters/time_filter'
+require 'leach/filters/boolean_filter'
 
 module Leach
   class Filter

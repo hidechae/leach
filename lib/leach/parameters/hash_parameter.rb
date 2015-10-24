@@ -35,6 +35,8 @@ module Leach
         value = Filter.run(value, type: type, **options)
         value = Leach.filter(value, &block) if block_given?
         @params.store(key, value)
+      rescue => e
+        raise Leach::Error::InvalidValue, e.message + " (key: #{key})"
       end
     end
   end

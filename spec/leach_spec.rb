@@ -173,5 +173,23 @@ describe Leach do
         Leach::Parameters::HashParameter.new([])
       end.to raise_error(Leach::Error::InvalidType)
     end
+
+    it 'nil is invalid if required' do
+      parameters = { key: nil }
+      expect do
+        Leach.filter(parameters) do
+          requires :key, type: String
+        end
+      end.to raise_error(Leach::Error::NotFound)
+    end
+
+    it 'nil is valid if optional' do
+      parameters = { key: nil }
+      expected = { key: nil }
+      actual = Leach.filter(parameters) do
+        optional :key, type: String
+      end
+      expect(actual).to eq(expected)
+    end
   end
 end

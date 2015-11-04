@@ -29,13 +29,5 @@ describe Leach::Filters::IntegerFilter do
       end.to raise_error(Leach::Error::InvalidValue)
     end
 
-    it 'nil' do
-      parameters = { key: nil }
-      expect do
-        Leach.filter(parameters) do
-          requires :key, type: Integer
-        end
-      end.to raise_error(Leach::Error::InvalidValue)
-    end
   end
 end

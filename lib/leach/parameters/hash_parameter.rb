@@ -14,14 +14,14 @@ module Leach
       end
 
       def requires(key, type:, **options, &block)
-        unless @row_params.key?(key)
+        unless @row_params.key?(key) && @row_params[key]
           fail Leach::Error::NotFound, "Required key `#{key}` not found."
         end
         set_params(key, type: type, **options, &block)
       end
 
       def optional(key, type:, default: nil, **options, &block)
-        if @row_params.key?(key)
+        if @row_params.key?(key) && @row_params[key]
           set_params(key, type: type, **options, &block)
         else
           @params.store(key, default)

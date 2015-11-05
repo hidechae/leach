@@ -178,7 +178,7 @@ describe Leach do
       parameters = { key: nil }
       expect do
         Leach.filter(parameters) do
-          requires :key, type: String
+          requires :key, type: Integer
         end
       end.to raise_error(Leach::Error::NotFound)
     end
@@ -187,7 +187,7 @@ describe Leach do
       parameters = { key: nil }
       expected = { key: nil }
       actual = Leach.filter(parameters) do
-        optional :key, type: String
+        optional :key, type: Integer
       end
       expect(actual).to eq(expected)
     end
